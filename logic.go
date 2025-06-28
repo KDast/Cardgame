@@ -29,13 +29,13 @@ func startWar(pCard1, pCard2 player, pile []cards) {
 }
 
 func war(pCard1, pCard2 player) (player, error) {
-	for i := 0; i < 10; i++ { // temporary fixed loop to not iterate over the whole game
+	for { // temporary fixed loop to not iterate over the whole game
 		if len(pCard1.hand) == 0 {
 			if len(pCard1.pile) == 0 {
 				fmt.Println("PLAYER 1 IS THE WINNER")
 				return pCard1, nil
 			} else {
-				pCard1.hand = shuffle(pCard1.pile)
+				pCard1.hand = append(pCard1.hand, shuffle(pCard1.pile)...)
 				pCard1.pile = pCard1.pile[:0]
 			}
 		}
@@ -44,7 +44,7 @@ func war(pCard1, pCard2 player) (player, error) {
 				println("PLAYER 2 IS THE WINNER")
 				return pCard2, nil
 			} else {
-				pCard2.hand = shuffle(pCard1.pile)
+				pCard2.hand = append(pCard2.hand, shuffle(pCard2.pile)...)
 				pCard2.pile = pCard2.hand[:0]
 			}
 		}
@@ -70,11 +70,11 @@ func war(pCard1, pCard2 player) (player, error) {
 		fmt.Printf("player 2 status, deck: %v, pile %v\n ", len(pCard2.hand), len(pCard2.pile))
 	}
 	// temporary logic to not debug entire gameplay length
-	player1CardsLeft := len(pCard1.hand) + len(pCard1.pile)
+	/*player1CardsLeft := len(pCard1.hand) + len(pCard1.pile)
 	player2CardsLeft := len(pCard2.hand) + len(pCard2.pile)
 	if player1CardsLeft > player2CardsLeft {
 		return pCard2, nil
 	} else {
 		return pCard1, nil
-	}
+	}*/
 }
