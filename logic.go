@@ -2,6 +2,32 @@ package main
 
 import "fmt"
 
+func startWar(pCard1, pCard2 player, pile []cards) {
+	pile = append(pile, pCard1.hand[:3]...)
+	pile = append(pile, pCard2.hand[:3]...)
+	// updates a pile where the pot is created
+	//
+	if pCard1.hand[3].value < pCard2.hand[3].value {
+		pCard1.hand = pCard1.hand[3:] // removes cards from hand
+		pCard2.hand = pCard2.hand[3:]
+		pCard1.hand = append(pCard1.hand, pile...) // adds card from pile to the loser
+		println("PLAYER 2 IS THE WINNER")
+		return // returns updated users
+	}
+	if pCard1.hand[3].value > pCard2.hand[3].value {
+		pCard1.hand = pCard1.hand[3:] // removes cards from hand
+		pCard2.hand = pCard2.hand[3:]
+		pCard2.hand = append(pCard2.hand, pile...) // adds card from pile to the loser
+		println("PLAYER 1 IS THE WINNER")
+		return // returns updated users
+	}
+	if pCard1.hand[3].value == pCard2.hand[3].value {
+		pCard1.hand = pCard1.hand[3:] // removes cards from hand
+		pCard2.hand = pCard2.hand[3:]
+		startWar(pCard1, pCard2, pile)
+	}
+}
+
 func war(pCard1, pCard2 player) (player, error) {
 	for i := 0; i < 10; i++ { // temporary fixed loop to not iterate over the whole game
 		if len(pCard1.hand) == 0 {
@@ -23,7 +49,12 @@ func war(pCard1, pCard2 player) (player, error) {
 			}
 		}
 		handWinner := ""
-		if pCard1.hand[0].value > pCard2.hand[0].value {
+		if pCard1.hand[0].value == pCard2.hand[0].value {
+			fmt.Println("\nSTARTING A WAR ")
+			pile := []cards{}
+			startWar(pCard1, pCard2, pile)
+
+		} else if pCard1.hand[0].value > pCard2.hand[0].value {
 			pCard2.pile = append(pCard2.pile, pCard1.hand[0])
 			pCard2.pile = append(pCard2.pile, pCard2.hand[0])
 			handWinner = "player 1"
