@@ -48,7 +48,7 @@ func makeCardDeck() []cards {
 func shuffle(deck []cards) []cards {
 	var posList []int
 	var shuffledCards []cards
-	for i := range 52 {
+	for i := range len(deck) {
 		posList = append(posList, i)
 	}
 
@@ -71,4 +71,13 @@ func shuffle(deck []cards) []cards {
 	}
 
 	return shuffledCards
+}
+
+func distributeCards(deck []cards) ([]cards, []cards) {
+	var playerOne []cards
+	var playerTwo []cards
+	halfDeck := len(deck) / 2
+	playerOne = append(playerOne, deck[:halfDeck]...)
+	playerTwo = append(playerTwo, deck[halfDeck:]...)
+	return playerOne, playerTwo
 }
